@@ -20,14 +20,16 @@ def validorder(order: Order):
     net = 0
     
     for item in order.items:
-        if item.type == 'payment':
+        if abs(item.amount) > 10000:
+            print("Error: %s is too big of a number" % (item.amount))
+            continue
+        elif item.type == 'payment':
             net += item.amount
         elif item.type == 'product':
             net -= item.amount * item.quantity
         else:
-            return("Invalid item type: %s" % item.type)
-    
-    if net != 0:
+            print("Invalid item type: %s" % item.type)
+    if int(net) != 0:
         return("Order ID: %s - Payment imbalance: $%0.2f" % (order.id, net))
     else:
         return("Order ID: %s - Full payment received!" % order.id)
